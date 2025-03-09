@@ -16,7 +16,7 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content=":3">
-    <meta property="og:description" content="endo was hereeee >.<">
+    <meta property="og:description" content="sk33t.club">
     <title></title>
     <style>
         html, body {
@@ -79,6 +79,21 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
             color: white;
             text-transform: lowercase;
         }
+        .fade-letter {
+            display: inline-block;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        #subText {
+            position: fixed;
+            top: 70px; /* Position below the topText */
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            color: white;
+            text-transform: lowercase;
+            font-size: 12px; /* Smaller font size */
+        }
     </style>
     <script>
         let audio;
@@ -101,6 +116,10 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
                     audio.muted = true;
                     this.textContent = 'unmute';
                 }
+            });
+
+            document.querySelectorAll('.hidden-link').forEach(link => {
+                randomFadeEffect(link);
             });
         });
 
@@ -176,13 +195,36 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
                     link.style.display = 'inline-block';
                     setTimeout(() => {
                         link.style.opacity = '1'; // Fade in the links
-                    }, 0);
+                        randomFadeEffect(link); // Start random fade effect
+                    }, 150); // Delay to ensure they fade in after appearing
                 });
             }, 1000); // Wait for the button to fully disappear
 
             // Change background to video
             let bgVideo = document.getElementById('bgVideo');
             bgVideo.style.opacity = '0.1'; // Set video opacity to 10%
+        }
+
+        function randomFadeEffect(element) {
+            const letters = element.textContent.split('');
+            element.textContent = '';
+            letters.forEach(letter => {
+                const span = document.createElement('span');
+                span.textContent = letter;
+                span.classList.add('fade-letter');
+                element.appendChild(span);
+            });
+
+            function fade() {
+                const spans = element.querySelectorAll('.fade-letter');
+                spans.forEach(span => {
+                    if (Math.random() < 0.2) { // Reduce the number of letters that fade
+                        span.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
+                    }
+                });
+                setTimeout(fade, 1000); // Continue fading without pause
+            }
+            fade();
         }
 
         // Add event listener for "enter" key press
@@ -195,6 +237,7 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
 </head>
 <body>
     <div id="topText">^w^</div>
+    <div id="subText">endo was here</div>
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
         <button id="playButton" onclick="playAudioAndFade()" style="font-family: 'Courier New', monospace; background-color: transparent; border: none; color: white; padding: 10px 20px; cursor: pointer; text-transform: lowercase;">enter</button>
         <a href="https://www.youtube.com/@lawyerdawg" class="hidden-link">youtube</a>
