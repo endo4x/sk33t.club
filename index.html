@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--
+
+Credits
+
+Gomi, jaydes - 
+https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
+
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            background-color: rgb(31, 31, 31);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #muteButton {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-family: 'Courier New', monospace;
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: lowercase;
+        }
+        .hidden-link {
+            display: none;
+            font-family: 'Courier New', monospace;
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: lowercase;
+            text-decoration: none;
+            margin-top: 10px; /* Add some space between the links */
+            opacity: 0; /* Start with opacity 0 */
+            transition: opacity 1s; /* Add transition for opacity */
+        }
+        #bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0; /* Start with opacity 0 */
+            transition: opacity 1s; /* Add transition for opacity */
+            z-index: -1; /* Place the video behind other elements */
+        }
+    </style>
+    <script>
+        let audio;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize audio
+            audio = new Audio('assets/yay.mp3');
+            audio.volume = 0.15;
+            audio.loop = true; // Make the audio loop
+
+            // Set initial title to zero-width space
+            document.title = "\u200B";
+
+            // Mute button functionality
+            document.getElementById('muteButton').addEventListener('click', function() {
+                if (audio.muted) {
+                    audio.muted = false;
+                    this.textContent = 'mute';
+                } else {
+                    audio.muted = true;
+                    this.textContent = 'unmute';
+                }
+            });
+        });
+
+        function animateTitle() {
+            let title = "sk33t.club";
+            let index = 0;
+            let forward = true;
+            function animate() {
+                if (forward) {
+                    if (index < title.length) {
+                        document.title = title.substring(0, index + 1);
+                        index++;
+                    } else {
+                        forward = false;
+                        index--;
+                    }
+                } else {
+                    if (index >= 0) {
+                        document.title = title.substring(0, index) || "\u200B"; // i think this is a zero-width space
+                        index--;
+                    } else {
+                        forward = true;
+                        index++;
+                    }
+                }
+                setTimeout(animate, 300);
+            }
+            animate();
+        }
+
+        function playAudio() {
+            // Use the global audio variable
+            audio.volume = 0;
+            audio.play();
+            let volume = 0;
+            let fadeInInterval = setInterval(function() {
+                if (volume < 0.15) {
+                    volume += 0.01;
+                    audio.volume = volume;
+                } else {
+                    clearInterval(fadeInInterval);
+                }
+            }, 4000 / 15); // 4 seconds divided by 15 steps
+        }
+
+        function playAudioAndFade() {
+            playAudio();
+            animateTitle();
+            let button = document.getElementById('playButton');
+            button.style.transition = 'opacity 1s';
+            button.style.opacity = '0';
+            button.style.pointerEvents = 'none'; // Prevent interaction
+            button.disabled = true;
+
+            // Animate each letter
+            let text = button.textContent;
+            button.innerHTML = '';
+            for (let i = 0; i < text.length; i++) {
+                let span = document.createElement('span');
+                span.textContent = text[i];
+                let randomDuration = Math.random() < 0.5 ? 0.5 : 1; // Randomly choose between 0.5s and 1s
+                span.style.transition = `opacity ${randomDuration}s`;
+                span.style.opacity = '1';
+                button.appendChild(span);
+                setTimeout(() => {
+                    span.style.opacity = '0';
+                }, 0);
+            }
+
+            // Show links after button disappears
+            setTimeout(() => {
+                document.querySelectorAll('.hidden-link').forEach(link => {
+                    link.style.display = 'inline-block';
+                    setTimeout(() => {
+                        link.style.opacity = '1'; // Fade in the links
+                    }, 0);
+                });
+            }, 1000); // Wait for the button to fully disappear
+
+            // Change background to video
+            let bgVideo = document.getElementById('bgVideo');
+            bgVideo.style.opacity = '0.1'; // Set video opacity to 10%
+        }
+
+        // Add event listener for "enter" key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                playAudioAndFade();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
+        <button id="playButton" onclick="playAudioAndFade()" style="font-family: 'Courier New', monospace; background-color: transparent; border: none; color: white; padding: 10px 20px; cursor: pointer; text-transform: lowercase;">enter</button>
+        <a href="https://www.youtube.com/@lawyerdawg" class="hidden-link">youtube</a>
+        <a href="https://roblox.com/users/28878/profile" class="hidden-link">roblox</a>
+        <a href="https://tracker.gg/valorant/profile/riot/endo%23gtbsg/overview" class="hidden-link">tracker</a>
+    </div>
+    <video id="bgVideo" src="assets/bgvideo.mov" muted autoplay loop></video>
+    <button id="muteButton">mute</button>
+</body>
+</html>
