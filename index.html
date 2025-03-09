@@ -1,18 +1,31 @@
 <!DOCTYPE html>
+
 <!--
 
 Credits
 
-Gomi, jaydes - 
+SONG:
+
+Gomi, jaydes - Searching ◛⑅·˚ ༘ ♡ 私はより良くなるように努めます
 https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
 
 -->
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
+        html, body {
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            height: 100%; /* Ensure the elements take full height */
+            display: flex; /* Use flexbox layout */
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            overflow: hidden; /* Prevent scrolling */
+        }
         body {
             background-color: rgb(31, 31, 31);
             color: white;
@@ -54,6 +67,15 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
             opacity: 0; /* Start with opacity 0 */
             transition: opacity 1s; /* Add transition for opacity */
             z-index: -1; /* Place the video behind other elements */
+        }
+        #topText {
+            position: fixed;
+            top: 40px; /* Increase top position by 10px */
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            color: white;
+            text-transform: lowercase;
         }
     </style>
     <script>
@@ -170,6 +192,7 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
     </script>
 </head>
 <body>
+    <div id="topText">^w^</div>
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
         <button id="playButton" onclick="playAudioAndFade()" style="font-family: 'Courier New', monospace; background-color: transparent; border: none; color: white; padding: 10px 20px; cursor: pointer; text-transform: lowercase;">enter</button>
         <a href="https://www.youtube.com/@lawyerdawg" class="hidden-link">youtube</a>
