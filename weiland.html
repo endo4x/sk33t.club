@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<!--
+
+Credits
+
+SONG:
+
+Weiland - Xanax Queen
+https://www.youtube.com/watch?v=aJcuDGT7da0
+
+-->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="zzz">
+    <meta property="og:description" content="hello">
+    <title></title>
+    <style>
+        html, body {
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            height: 100%; /* Ensure the elements take full height */
+            display: flex; /* Use flexbox layout */
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+            overflow: hidden; /* Prevent scrolling */
+        }
+        body {
+            background-color: rgb(0, 0, 0);
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #muteButton {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-family: 'Courier New', monospace;
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: lowercase;
+        }
+        .hidden-link {
+            display: none;
+            font-family: 'Courier New', monospace;
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: lowercase;
+            text-decoration: none;
+            margin-top: 10px; /* Add some space between the links */
+            opacity: 0; /* Start with opacity 0 */
+            transition: opacity 1s; /* Add transition for opacity */
+        }
+        #bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0; /* Start with opacity 0 */
+            transition: opacity 1s; /* Add transition for opacity */
+            z-index: -1; /* Place the video behind other elements */
+        }
+        #topText {
+            position: fixed;
+            top: 40px; /* Increase top position by 10px */
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            color: white;
+            text-transform: lowercase;
+        }
+        .fade-letter {
+            display: inline-block;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+        #subText {
+            position: fixed;
+            top: 70px; /* Position below the topText */
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Courier New', monospace;
+            color: white;
+            text-transform: lowercase;
+            font-size: 12px; /* Smaller font size */
+        }
+    </style>
+    <script>
+        let audio;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            audio = new Audio('assets/xanqueen.mp3');
+            audio.volume = 0.15;
+            audio.loop = true; 
+
+            document.title = "\u200B";
+
+            // Mute button functionality
+            document.getElementById('muteButton').addEventListener('click', function() {
+                if (audio.muted) {
+                    audio.muted = false;
+                    this.textContent = 'mute';
+                } else {
+                    audio.muted = true;
+                    this.textContent = 'unmute';
+                }
+            });
+
+            document.querySelectorAll('.hidden-link').forEach(link => {
+                randomFadeEffect(link);
+            });
+        });
+
+        function animateTitle() {
+            let title = "endo";
+            let index = 0;
+            let forward = true;
+            function animate() {
+                if (forward) {
+                    if (index < title.length) {
+                        document.title = title.substring(0, index + 1);
+                        index++;
+                    } else {
+                        forward = false;
+                        index--;
+                    }
+                } else {
+                    if (index >= 0) {
+                        document.title = title.substring(0, index) || "\u200B";
+                        index--;
+                    } else {
+                        forward = true;
+                        index++;
+                    }
+                }
+                setTimeout(animate, 300);
+            }
+            animate();
+        }
+
+        function playAudio() {
+            audio.volume = 0;
+            audio.play();
+            let volume = 0;
+            let fadeInInterval = setInterval(function() {
+                if (volume < 0.15) {
+                    volume += 0.01;
+                    audio.volume = volume;
+                } else {
+                    clearInterval(fadeInInterval);
+                }
+            }, 4000 / 15); 
+        }
+
+        function playAudioAndFade() {
+            playAudio();
+            animateTitle();
+            let button = document.getElementById('playButton');
+            button.style.transition = 'opacity 1s';
+            button.style.opacity = '0';
+            button.style.pointerEvents = 'none';
+            button.disabled = true;
+
+            // Animate each letter
+            let text = button.textContent;
+            button.innerHTML = '';
+            for (let i = 0; i < text.length; i++) {
+                let span = document.createElement('span');
+                span.textContent = text[i];
+                let randomDuration = Math.random() < 0.5 ? 0.5 : 1; 
+                span.style.transition = `opacity ${randomDuration}s`;
+                span.style.opacity = '1';
+                button.appendChild(span);
+                setTimeout(() => {
+                    span.style.opacity = '0';
+                }, 0);
+            }
+
+            // Show links after button disappears
+            setTimeout(() => {
+                document.querySelectorAll('.hidden-link').forEach(link => {
+                    link.style.display = 'inline-block';
+                    setTimeout(() => {
+                        link.style.opacity = '1'; 
+                        randomFadeEffect(link); 
+                    }, 150);
+                });
+            }, 1000); 
+
+            // Change background to video
+            let bgVideo = document.getElementById('bgVideo');
+            bgVideo.style.opacity = '0.1'; 
+        }
+
+        function randomFadeEffect(element) {
+            const letters = element.textContent.split('');
+            element.textContent = '';
+            letters.forEach(letter => {
+                const span = document.createElement('span');
+                span.textContent = letter;
+                span.classList.add('fade-letter');
+                element.appendChild(span);
+            });
+
+            function fade() {
+                const spans = element.querySelectorAll('.fade-letter');
+                spans.forEach(span => {
+                    if (Math.random() < 0.2) { 
+                        span.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
+                    }
+                });
+                setTimeout(fade, 1000); 
+            }
+            fade(); // gatekeeping comments fuk u
+        }
+
+        // Add event listener for "enter" key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                playAudioAndFade();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="topText">ee nn dd oo</div>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
+        <button id="playButton" onclick="playAudioAndFade()" style="font-family: 'Courier New', monospace; background-color: transparent; border: none; color: white; padding: 10px 20px; cursor: pointer; text-transform: lowercase;">enter</button>
+        <a href="https://www.youtube.com/@endovlr" class="hidden-link">youtube</a>
+        <a href="https://roblox.com/users/28878/profile" class="hidden-link">roblox</a>
+        <a href="https://tracker.gg/valorant/profile/riot/remorse%232510/overview" class="hidden-link">tracker</a>
+        <a href="https://www.youtube.com/watch?v=aJcuDGT7da0" class="hidden-link">song</a>
+    </div>
+    <video id="bgVideo" src="assets/showup.mp4" muted autoplay loop></video>
+    <button id="muteButton">mute</button>
+</body>
+</html>
