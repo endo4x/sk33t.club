@@ -99,12 +99,10 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
         let audio;
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Initialize audio
             audio = new Audio('assets/yay.mp3');
             audio.volume = 0.15;
-            audio.loop = true; // Make the audio loop
+            audio.loop = true; 
 
-            // Set initial title to zero-width space
             document.title = "\u200B";
 
             // Mute button functionality
@@ -138,7 +136,7 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
                     }
                 } else {
                     if (index >= 0) {
-                        document.title = title.substring(0, index) || "\u200B"; // i think this is a zero-width space
+                        document.title = title.substring(0, index) || "\u200B";
                         index--;
                     } else {
                         forward = true;
@@ -151,7 +149,6 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
         }
 
         function playAudio() {
-            // Use the global audio variable
             audio.volume = 0;
             audio.play();
             let volume = 0;
@@ -162,7 +159,7 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
                 } else {
                     clearInterval(fadeInInterval);
                 }
-            }, 4000 / 15); // 4 seconds divided by 15 steps
+            }, 4000 / 15); 
         }
 
         function playAudioAndFade() {
@@ -171,7 +168,7 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
             let button = document.getElementById('playButton');
             button.style.transition = 'opacity 1s';
             button.style.opacity = '0';
-            button.style.pointerEvents = 'none'; // Prevent interaction
+            button.style.pointerEvents = 'none';
             button.disabled = true;
 
             // Animate each letter
@@ -180,7 +177,7 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
             for (let i = 0; i < text.length; i++) {
                 let span = document.createElement('span');
                 span.textContent = text[i];
-                let randomDuration = Math.random() < 0.5 ? 0.5 : 1; // Randomly choose between 0.5s and 1s
+                let randomDuration = Math.random() < 0.5 ? 0.5 : 1; 
                 span.style.transition = `opacity ${randomDuration}s`;
                 span.style.opacity = '1';
                 button.appendChild(span);
@@ -194,15 +191,15 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
                 document.querySelectorAll('.hidden-link').forEach(link => {
                     link.style.display = 'inline-block';
                     setTimeout(() => {
-                        link.style.opacity = '1'; // Fade in the links
-                        randomFadeEffect(link); // Start random fade effect
-                    }, 150); // Delay to ensure they fade in after appearing
+                        link.style.opacity = '1'; 
+                        randomFadeEffect(link); 
+                    }, 150);
                 });
-            }, 1000); // Wait for the button to fully disappear
+            }, 1000); 
 
             // Change background to video
             let bgVideo = document.getElementById('bgVideo');
-            bgVideo.style.opacity = '0.1'; // Set video opacity to 10%
+            bgVideo.style.opacity = '0.1'; 
         }
 
         function randomFadeEffect(element) {
@@ -218,13 +215,13 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
             function fade() {
                 const spans = element.querySelectorAll('.fade-letter');
                 spans.forEach(span => {
-                    if (Math.random() < 0.2) { // Reduce the number of letters that fade
+                    if (Math.random() < 0.2) { 
                         span.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
                     }
                 });
-                setTimeout(fade, 1000); // Continue fading without pause
+                setTimeout(fade, 1000); 
             }
-            fade();
+            fade(); // gatekeeping comments fuk u
         }
 
         // Add event listener for "enter" key press
@@ -240,9 +237,10 @@ https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=9019d0f8d9d64ecd
     <div id="subText">endo was here</div>
     <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column;">
         <button id="playButton" onclick="playAudioAndFade()" style="font-family: 'Courier New', monospace; background-color: transparent; border: none; color: white; padding: 10px 20px; cursor: pointer; text-transform: lowercase;">enter</button>
-        <a href="https://www.youtube.com/@lawyerdawg" class="hidden-link">youtube</a>
+        <a href="https://www.youtube.com/@endovlr" class="hidden-link">youtube</a>
         <a href="https://roblox.com/users/28878/profile" class="hidden-link">roblox</a>
         <a href="https://tracker.gg/valorant/profile/riot/remorse%232510/overview" class="hidden-link">tracker</a>
+        <a href="https://open.spotify.com/track/05UNmC5kz7I34gfrpFPmNR?si=48e0a3cd9bcc441d" class="hidden-link">song</a>
     </div>
     <video id="bgVideo" src="assets/bgvideo.mov" muted autoplay loop></video>
     <button id="muteButton">mute</button>
